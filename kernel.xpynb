@@ -1,0 +1,261 @@
+{
+  "cells": [
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "4dddcea6f1e6b633068e51c8a377095b3e52a9e6",
+        "_kg_hide-output": false
+      },
+      "cell_type": "code",
+      "source": "import matplotlib.pyplot as plt\nimport numpy as np\nimport cv2\nprint(cv2.__version__)\nimport os\nprint(os.listdir(\"../input\"))",
+      "execution_count": 17,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": "3.4.0\n['train', 'test', 'trainLabels.npy', 'vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5', 'testbeg.npy', 'train.csv', 'sample_submission.csv', 'test.csv', 'trainbeg.npy']\n",
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "b9aa1932291d47bf1d67b885e89aa6281262b921"
+      },
+      "cell_type": "code",
+      "source": "# X_train = np.load('../input/trainbeg.npy')\n\ninp_dm = 150\n# print(X_train)\n\nX_train = np.zeros((13000,inp_dm,inp_dm,3))\n\nfor i in range(13000):\n    image = cv2.imread('../input/train/train/Img-{}.jpg'.format(i+1))\n    #print(image.shape)\n#     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)\n#     plt.imshow(gray_image)\n#     plt.show()\n#     plt.imshow(image)\n#     plt.show()\n    resized_image = cv2.resize(image, (inp_dm, inp_dm)) \n    X_train[i] =  resized_image\n    if i % 100 == 0:\n        print(i)\n\nprint(X_train)",
+      "execution_count": 18,
+      "outputs": [
+        {
+          "output_type": "error",
+          "ename": "MemoryError",
+          "evalue": "",
+          "traceback": [
+            "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+            "\u001b[0;31mMemoryError\u001b[0m                               Traceback (most recent call last)",
+            "\u001b[0;32m<ipython-input-18-2e7f2a69cafe>\u001b[0m in \u001b[0;36m<module>\u001b[0;34m()\u001b[0m\n\u001b[1;32m      4\u001b[0m \u001b[0;31m# print(X_train)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      5\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0;32m----> 6\u001b[0;31m \u001b[0mX_train\u001b[0m \u001b[0;34m=\u001b[0m \u001b[0mnp\u001b[0m\u001b[0;34m.\u001b[0m\u001b[0mzeros\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m13000\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0minp_dm\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0minp_dm\u001b[0m\u001b[0;34m,\u001b[0m\u001b[0;36m3\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n\u001b[0m\u001b[1;32m      7\u001b[0m \u001b[0;34m\u001b[0m\u001b[0m\n\u001b[1;32m      8\u001b[0m \u001b[0;32mfor\u001b[0m \u001b[0mi\u001b[0m \u001b[0;32min\u001b[0m \u001b[0mrange\u001b[0m\u001b[0;34m(\u001b[0m\u001b[0;36m13000\u001b[0m\u001b[0;34m)\u001b[0m\u001b[0;34m:\u001b[0m\u001b[0;34m\u001b[0m\u001b[0m\n",
+            "\u001b[0;31mMemoryError\u001b[0m: "
+          ]
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "74a3d2f760f3ed2186aa11adafee135dcbaced23",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "# X_test = np.load('../input/testbeg.npy')\n\n\n# print(X_test)\n\nX_test = np.zeros((6000,inp_dm,inp_dm,3))\n\nfor i in range(6000):\n    image = cv2.imread('../input/test/test/Img-{}.jpg'.format(i+1))\n    #print(image.shape)\n#     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)\n#     plt.imshow(gray_image)\n#     plt.show()\n#     plt.imshow(image)\n#     plt.show()\n    resized_image = cv2.resize(image, (inp_dm, inp_dm)) \n    X_test[i] =  resized_image\n    if i % 100 == 0:\n        print(i)\n\nprint(X_test)",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "2b2f436a601ca9ebf063cb1cbae90a7d96739763",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "data_classes = [\"antelope\",\"bat\",\"beaver\",\"bobcat\",\"buffalo\",\"chihuahua\",\"chimpanzee\",\"collie\",\"dalmatian\",\"german+shepherd\",\"grizzly+bear\",\"hippopotamus\",\"horse\",\"killer+whale\",\"mole\",\"moose\",\"mouse\",\"otter\",\"ox\",\"persian+cat\",\"raccoon\",\"rat\",\"rhinoceros\",\"seal\",\"siamese+cat\",\"spider+monkey\",\"squirrel\",\"walrus\",\"weasel\",\"wolf\"]\n\nimport pandas as pd\n# tr_label = pd.read_csv('../input/train.csv')\n# tr_label.head(10)\n\nprint(X_train)",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "5a274e56f554081942ee090235f774c28f890409",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "Y_train =  np.load('../input/trainLabels.npy')\n\nprint(Y_train.shape)\n\nY_train = Y_train.reshape(Y_train.shape[0])\n\n\nnp.squeeze(Y_train)\nprint(Y_train.shape)\nprint(Y_train)\n",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "b09394bc76751e4d13fe6a9e8cb76ebbce497fc9",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "# te_label = pd.read_csv('/media/vedavikas/New Volume1/DL/meta-data/test.csv')\n# te_label.head(10)",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "5ab570995df5ae1d3ec5b664482f9954c7484b65",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "from sklearn.model_selection import cross_val_score\nfrom keras.models import Sequential, load_model, Model\nfrom keras.layers import Input, BatchNormalization\nfrom keras.layers import Dense, LSTM, GlobalAveragePooling1D, GlobalAveragePooling2D,Dropout\nfrom keras.layers import Activation, Flatten, Dropout, BatchNormalization\nfrom keras.layers import Conv2D, MaxPooling2D, GlobalMaxPooling2D\nimport keras\ndef conv_classifier(a):    \n    model_input = Input(shape=(a, a,3))\n    \n    # Define a model architecture\n    x = Conv2D(64, (3, 3), activation='relu', padding='same')(model_input)\n    x = MaxPooling2D(pool_size=(2, 2))(x)    \n    x = Dropout(0.25)(x)\n    \n    x = Conv2D(64, (3, 3), activation='relu', padding='same')(model_input)\n    x = MaxPooling2D(pool_size=(2, 2))(x)    \n    x = Dropout(0.25)(x)\n    \n    x = Conv2D(64, (3, 3), activation='relu', padding='same')(x)\n    x = MaxPooling2D(pool_size=(2, 2))(x)    \n    x = Dropout(0.25)(x)\n    \n    x = Conv2D(128, (3, 3), activation='relu', padding='same')(x)       \n    x = MaxPooling2D(pool_size=(2, 2))(x)    \n    x = Dropout(0.25)(x)\n    \n    x = Conv2D(32, (3, 3), activation='relu', padding='same')(x)       \n    x = MaxPooling2D(pool_size=(2, 2))(x)    \n    x = Dropout(0.25)(x)\n    \n    x = Flatten()(x)\n    x = Dense(512, activation='relu')(x)    \n    x = Dropout(0.25)(x)\n\n    \n    y1 = Dense(30, activation='softmax')(x)\n    \n    model = Model(inputs=model_input, outputs= y1)\n    \n    # Compile the model\n    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])\n    return model",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "b0fbb3ffcd4df04c44727485399e2c0113f1e3e1",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "\n# model = conv_classifier(X_train.shape[1])\n\n# model.summary()\n# print(X_train.shape)\n\n# callbacks_list = [keras.callbacks.ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=3)]\n\n\n# history = model.fit(x = X_train/255.,y = keras.utils.to_categorical(Y_train, num_classes=30),batch_size=128,epochs=50,validation_split=0.2,callbacks=callbacks_list,verbose=1)",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "d7d65dd92ae0a82a19490c45ceb97e54d98fb7bd",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "# plt.plot(history.history['acc'])\n# #plt.plot(history.history['val_acc'])\n# plt.title('model accuracy')\n# plt.ylabel('accuracy')\n# plt.xlabel('epoch')\n\n# print(model.evaluate(x=X_train/255., y=keras.utils.to_categorical(Y_train, num_classes=30), verbose=1))\n\n",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "8c03df75b9bc34e12d0d9e82eb718bdfc8668836",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "# y_train_predict = np.argmax(model.predict(x=X_train/255.),axis = 1)\n# from sklearn.metrics import accuracy_score\n\n# print('\\n',y_train_predict)\n\n# np.squeeze(Y_train)\n\n# print(Y_train)\n\n# # print(\"Train accuracy : {}%\".format(np.sum(y_train_predict == Y_train/(13000))))\n\n# print(\"Train accuracy : {}%\".format(accuracy_score(Y_train,y_train_predict)))",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "22ef572b159f1bf9fe4b7ea626ced5344023744c",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "# tr_label = pd.read_csv('../input/sample_submission.csv')\n# tr_label.head(10)",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "21c85ab5fe1306d5c2ea9934ed79f95f403f783b",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "# y_test_predict = model.predict(x=X_test/255.)\n\n# print('\\n',y_test_predict)",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "e342f81a176411daef7735c9743c6dbbe09f386a",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "# label_df = pd.DataFrame(data=y_test_predict, columns= data_classes)\n# label_df.head(10)\n\n# subm = pd.DataFrame()\n\n\n# te_label = pd.read_csv('../input/test.csv')\n\n\n# print(te_label['Image_id'])\n\n# subm['image_id'] = te_label['Image_id']\n\n# print(subm.head(10))\n# subm = pd.concat([subm, label_df], axis=1)\n# subm.to_csv('submitcnn.csv',index = False)\n\n# subm\n",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "92176c2898d8abca93cf2f6f8cd7662a9e36766a",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "vgg_model_path = '../input/vgg16_weights_tf_dim_ordering_tf_kernels_notop.h5'\nfrom keras.applications import VGG16\nconv_base = VGG16(weights=vgg_model_path,include_top=False,input_shape=(inp_dm,inp_dm, 3))\nconv_base.trainable = False\n\nfor layer in conv_base.layers:\n    if layer.name == 'block5_conv1':\n        layer.trainable = True\n    if layer.name == 'block4_conv1':\n        layer.trainable = True    \n    else:\n        layer.trainable = False\n\nconv_base.summary()",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "collapsed": true,
+        "_uuid": "6171c5203ee2827ad2ed66596456b6b658e74d72"
+      },
+      "cell_type": "code",
+      "source": "def VGG16_classifier():    \n    model = Sequential()\n    model.add(conv_base)\n    model.add(Flatten()) \n    model.add(Dense(512, activation='relu'))\n    model.add(Dropout(0.2))\n    model.add(Dense(30, activation='softmax'))\n    model.summary()\n    \n    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])\n    \n    return model",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "0ea7903c06b04fa7b020c158f52a4d44d7b01247",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "model1 = VGG16_classifier()\ncallbacks_list = [keras.callbacks.ReduceLROnPlateau(monitor='val_loss',factor=0.2,patience=3)]\n\nhistory_vgg = model1.fit(x = X_train/255.,y = keras.utils.to_categorical(Y_train, num_classes=30),batch_size=64,epochs=25,validation_split=0.1,callbacks = callbacks_list, verbose=1)",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "7654792e2aa2eafa0aec6d8cfe0c78e58acf9aeb",
+        "collapsed": true
+      },
+      "cell_type": "code",
+      "source": "from sklearn.metrics import accuracy_score\ny_train_predict = np.argmax(model1.predict(x=X_train/255.),axis = 1)\n\nprint('\\n',y_train_predict)\n\nnp.squeeze(Y_train)\n\nprint(Y_train)\n\nprint(\"Train accuracy : {}%\".format(accuracy_score(Y_train,y_train_predict)))",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "8023c58e4504aca9faf1352608a71a886faeb054"
+      },
+      "cell_type": "code",
+      "source": "y_test_predict = model1.predict(x=X_test/255.)\n\nprint('\\n',y_test_predict)\n",
+      "execution_count": 19,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": "\n [[0.02653461 0.02309711 0.02171391 ... 0.00819485 0.00621163 0.02862422]\n [0.02402362 0.01806309 0.01993634 ... 0.00844256 0.00704308 0.01563906]\n [0.02156184 0.01671495 0.02113501 ... 0.0121193  0.01074595 0.01583318]\n ...\n [0.02046609 0.02662384 0.01813882 ... 0.01475345 0.01559654 0.01628163]\n [0.02230244 0.01276136 0.03610381 ... 0.01345049 0.00814927 0.01718742]\n [0.04782576 0.01520176 0.01927169 ... 0.00752453 0.0072495  0.02084058]]\n",
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "metadata": {
+        "trusted": true,
+        "_uuid": "50c9f43693acb78c3118fd27d7c565596d00114c"
+      },
+      "cell_type": "code",
+      "source": "label_df = pd.DataFrame(data=y_test_predict, columns= data_classes)\n\nlabel_df.head(10)\n\nsubm = pd.DataFrame()\n\n\nte_label = pd.read_csv('../input/test.csv')\n\n\nprint(te_label['Image_id'])\n\nsubm['image_id'] = te_label['Image_id']\n\nprint(subm.head(10))\nsubm = pd.concat([subm, label_df], axis=1)\n\nsubm.to_csv('submitvgg.csv',index = False)\n\nprint(subm)\n",
+      "execution_count": 20,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": "0          Img-1.jpg\n1          Img-2.jpg\n2          Img-3.jpg\n3          Img-4.jpg\n4          Img-5.jpg\n5          Img-6.jpg\n6          Img-7.jpg\n7          Img-8.jpg\n8          Img-9.jpg\n9         Img-10.jpg\n10        Img-11.jpg\n11        Img-12.jpg\n12        Img-13.jpg\n13        Img-14.jpg\n14        Img-15.jpg\n15        Img-16.jpg\n16        Img-17.jpg\n17        Img-18.jpg\n18        Img-19.jpg\n19        Img-20.jpg\n20        Img-21.jpg\n21        Img-22.jpg\n22        Img-23.jpg\n23        Img-24.jpg\n24        Img-25.jpg\n25        Img-26.jpg\n26        Img-27.jpg\n27        Img-28.jpg\n28        Img-29.jpg\n29        Img-30.jpg\n            ...     \n5970    Img-5971.jpg\n5971    Img-5972.jpg\n5972    Img-5973.jpg\n5973    Img-5974.jpg\n5974    Img-5975.jpg\n5975    Img-5976.jpg\n5976    Img-5977.jpg\n5977    Img-5978.jpg\n5978    Img-5979.jpg\n5979    Img-5980.jpg\n5980    Img-5981.jpg\n5981    Img-5982.jpg\n5982    Img-5983.jpg\n5983    Img-5984.jpg\n5984    Img-5985.jpg\n5985    Img-5986.jpg\n5986    Img-5987.jpg\n5987    Img-5988.jpg\n5988    Img-5989.jpg\n5989    Img-5990.jpg\n5990    Img-5991.jpg\n5991    Img-5992.jpg\n5992    Img-5993.jpg\n5993    Img-5994.jpg\n5994    Img-5995.jpg\n5995    Img-5996.jpg\n5996    Img-5997.jpg\n5997    Img-5998.jpg\n5998    Img-5999.jpg\n5999    Img-6000.jpg\nName: Image_id, Length: 6000, dtype: object\n     image_id\n0   Img-1.jpg\n1   Img-2.jpg\n2   Img-3.jpg\n3   Img-4.jpg\n4   Img-5.jpg\n5   Img-6.jpg\n6   Img-7.jpg\n7   Img-8.jpg\n8   Img-9.jpg\n9  Img-10.jpg\n          image_id  antelope       bat    beaver    bobcat   buffalo  \\\n0        Img-1.jpg  0.026535  0.023097  0.021714  0.025266  0.013285   \n1        Img-2.jpg  0.024024  0.018063  0.019936  0.031555  0.007701   \n2        Img-3.jpg  0.021562  0.016715  0.021135  0.029668  0.008360   \n3        Img-4.jpg  0.045670  0.007915  0.039552  0.025332  0.006197   \n4        Img-5.jpg  0.036205  0.022346  0.022420  0.019286  0.006362   \n5        Img-6.jpg  0.024352  0.021043  0.027740  0.034302  0.010236   \n6        Img-7.jpg  0.018501  0.016674  0.031336  0.018811  0.019248   \n7        Img-8.jpg  0.017998  0.017938  0.023250  0.030815  0.008440   \n8        Img-9.jpg  0.025808  0.013026  0.014147  0.034787  0.008175   \n9       Img-10.jpg  0.047810  0.014665  0.021062  0.031788  0.015721   \n10      Img-11.jpg  0.019103  0.019050  0.021536  0.028057  0.007774   \n11      Img-12.jpg  0.026807  0.026204  0.030377  0.045540  0.003454   \n12      Img-13.jpg  0.031656  0.017919  0.016052  0.022487  0.017088   \n13      Img-14.jpg  0.039686  0.020585  0.021577  0.058247  0.009226   \n14      Img-15.jpg  0.037390  0.013124  0.018723  0.053869  0.008033   \n15      Img-16.jpg  0.028691  0.018991  0.016965  0.014629  0.011842   \n16      Img-17.jpg  0.016758  0.009683  0.034189  0.046989  0.008033   \n17      Img-18.jpg  0.023675  0.014931  0.022442  0.026878  0.009481   \n18      Img-19.jpg  0.025045  0.019493  0.018598  0.032291  0.009781   \n19      Img-20.jpg  0.026113  0.024379  0.013655  0.026963  0.012782   \n20      Img-21.jpg  0.027440  0.020477  0.022524  0.018369  0.013214   \n21      Img-22.jpg  0.026103  0.020391  0.012553  0.033104  0.012818   \n22      Img-23.jpg  0.014427  0.024488  0.018846  0.037398  0.007081   \n23      Img-24.jpg  0.032751  0.018809  0.017918  0.027491  0.014488   \n24      Img-25.jpg  0.050096  0.017826  0.023918  0.031037  0.012437   \n25      Img-26.jpg  0.024570  0.018511  0.020490  0.036098  0.009419   \n26      Img-27.jpg  0.027328  0.017361  0.014232  0.024639  0.006959   \n27      Img-28.jpg  0.022516  0.017371  0.022612  0.019789  0.007621   \n28      Img-29.jpg  0.038757  0.016278  0.014185  0.027015  0.009178   \n29      Img-30.jpg  0.031801  0.015787  0.042333  0.036260  0.008747   \n...            ...       ...       ...       ...       ...       ...   \n5970  Img-5971.jpg  0.021471  0.015653  0.020837  0.028951  0.011421   \n5971  Img-5972.jpg  0.012544  0.047192  0.029605  0.026086  0.009232   \n5972  Img-5973.jpg  0.013932  0.016652  0.028247  0.019633  0.009891   \n5973  Img-5974.jpg  0.021069  0.036264  0.031298  0.039254  0.008357   \n5974  Img-5975.jpg  0.022528  0.009756  0.041079  0.029109  0.008354   \n5975  Img-5976.jpg  0.038104  0.012810  0.019405  0.027714  0.007921   \n5976  Img-5977.jpg  0.018783  0.014931  0.044956  0.022624  0.008481   \n5977  Img-5978.jpg  0.014531  0.015338  0.021401  0.030945  0.008969   \n5978  Img-5979.jpg  0.026022  0.012285  0.024513  0.023390  0.008021   \n5979  Img-5980.jpg  0.029166  0.019975  0.017949  0.023089  0.009956   \n5980  Img-5981.jpg  0.021352  0.012444  0.022775  0.052330  0.012975   \n5981  Img-5982.jpg  0.033802  0.028337  0.015608  0.023718  0.013826   \n5982  Img-5983.jpg  0.030491  0.018436  0.013972  0.047981  0.012479   \n5983  Img-5984.jpg  0.022842  0.017218  0.014189  0.028980  0.013339   \n5984  Img-5985.jpg  0.024967  0.026665  0.035147  0.046938  0.005867   \n5985  Img-5986.jpg  0.024282  0.012276  0.016520  0.023313  0.010105   \n5986  Img-5987.jpg  0.039090  0.013870  0.022020  0.018313  0.013266   \n5987  Img-5988.jpg  0.028250  0.014792  0.035262  0.028235  0.007481   \n5988  Img-5989.jpg  0.032563  0.014334  0.018980  0.034514  0.008380   \n5989  Img-5990.jpg  0.028407  0.015487  0.022807  0.037311  0.008487   \n5990  Img-5991.jpg  0.056685  0.017536  0.025257  0.033222  0.012893   \n5991  Img-5992.jpg  0.017452  0.013638  0.042844  0.024291  0.004567   \n5992  Img-5993.jpg  0.025685  0.009056  0.023481  0.043239  0.007489   \n5993  Img-5994.jpg  0.024019  0.012958  0.018452  0.025062  0.014489   \n5994  Img-5995.jpg  0.042058  0.021116  0.046744  0.022771  0.014580   \n5995  Img-5996.jpg  0.019650  0.011621  0.015181  0.019972  0.013646   \n5996  Img-5997.jpg  0.022534  0.021585  0.018787  0.032450  0.012981   \n5997  Img-5998.jpg  0.020466  0.026624  0.018139  0.026930  0.011939   \n5998  Img-5999.jpg  0.022302  0.012761  0.036104  0.021063  0.007075   \n5999  Img-6000.jpg  0.047826  0.015202  0.019272  0.042540  0.006701   \n\n      chihuahua  chimpanzee    collie  dalmatian    ...      raccoon  \\\n0      0.055671    0.157448  0.048929   0.042676    ...     0.016328   \n1      0.071654    0.078110  0.026183   0.036288    ...     0.007958   \n2      0.045488    0.191665  0.040816   0.037284    ...     0.012837   \n3      0.044406    0.090417  0.084663   0.021798    ...     0.027353   \n4      0.045501    0.104616  0.046126   0.040422    ...     0.015533   \n5      0.058870    0.162624  0.041565   0.029773    ...     0.016827   \n6      0.077341    0.139254  0.042587   0.035523    ...     0.016647   \n7      0.048128    0.087927  0.049380   0.027964    ...     0.008488   \n8      0.058597    0.170077  0.056276   0.030332    ...     0.011671   \n9      0.108444    0.193934  0.041630   0.024409    ...     0.013892   \n10     0.069806    0.127732  0.059186   0.052206    ...     0.012598   \n11     0.065719    0.129221  0.033209   0.027901    ...     0.010291   \n12     0.097127    0.124146  0.060309   0.038499    ...     0.015944   \n13     0.045652    0.131259  0.040022   0.040430    ...     0.014128   \n14     0.041467    0.144245  0.073881   0.042386    ...     0.011427   \n15     0.088129    0.069856  0.048777   0.026681    ...     0.012003   \n16     0.051258    0.100579  0.033918   0.035197    ...     0.011222   \n17     0.072121    0.092652  0.059009   0.037584    ...     0.010793   \n18     0.050567    0.161086  0.071040   0.047568    ...     0.016662   \n19     0.050197    0.131526  0.060735   0.052825    ...     0.020289   \n20     0.091762    0.107610  0.064857   0.021744    ...     0.020112   \n21     0.056758    0.128661  0.031645   0.049625    ...     0.012001   \n22     0.040712    0.114703  0.065298   0.046787    ...     0.015424   \n23     0.055459    0.118806  0.046335   0.024419    ...     0.028129   \n24     0.068314    0.082395  0.030011   0.047468    ...     0.013462   \n25     0.053855    0.146148  0.062111   0.044640    ...     0.021048   \n26     0.048080    0.091576  0.036767   0.031106    ...     0.009498   \n27     0.097124    0.140555  0.042883   0.031376    ...     0.011855   \n28     0.067244    0.165337  0.033507   0.048527    ...     0.014001   \n29     0.041292    0.122104  0.056701   0.036779    ...     0.014462   \n...         ...         ...       ...        ...    ...          ...   \n5970   0.047376    0.163343  0.068537   0.034415    ...     0.013829   \n5971   0.042063    0.139061  0.066825   0.040993    ...     0.014611   \n5972   0.055160    0.203148  0.051838   0.044251    ...     0.015437   \n5973   0.060403    0.105438  0.072204   0.037084    ...     0.015790   \n5974   0.092277    0.141149  0.039903   0.012852    ...     0.026261   \n5975   0.036668    0.109607  0.059196   0.045419    ...     0.010466   \n5976   0.049152    0.110705  0.052999   0.081810    ...     0.017822   \n5977   0.051392    0.126593  0.050251   0.032563    ...     0.019770   \n5978   0.103682    0.146250  0.034692   0.022332    ...     0.015000   \n5979   0.029209    0.174917  0.041189   0.054852    ...     0.012828   \n5980   0.102660    0.130452  0.042860   0.036956    ...     0.017106   \n5981   0.064815    0.106967  0.063590   0.033394    ...     0.014147   \n5982   0.063429    0.140917  0.056401   0.025255    ...     0.012954   \n5983   0.062690    0.145843  0.046059   0.056683    ...     0.017019   \n5984   0.051188    0.114200  0.053969   0.016796    ...     0.009424   \n5985   0.138915    0.083631  0.038338   0.030005    ...     0.007708   \n5986   0.103468    0.080220  0.041089   0.038732    ...     0.015492   \n5987   0.126142    0.108675  0.035672   0.023838    ...     0.009104   \n5988   0.224981    0.102879  0.032743   0.029298    ...     0.014382   \n5989   0.037418    0.094121  0.042572   0.038351    ...     0.008094   \n5990   0.046125    0.072675  0.038967   0.022811    ...     0.014959   \n5991   0.075464    0.117969  0.032119   0.022048    ...     0.022503   \n5992   0.051381    0.153299  0.069276   0.042111    ...     0.014609   \n5993   0.073929    0.205404  0.036226   0.055854    ...     0.019008   \n5994   0.056101    0.111474  0.049698   0.020356    ...     0.014213   \n5995   0.076208    0.223382  0.033063   0.027039    ...     0.016295   \n5996   0.035483    0.151131  0.046197   0.056049    ...     0.017685   \n5997   0.049816    0.140437  0.052752   0.037651    ...     0.019232   \n5998   0.057833    0.094462  0.045104   0.059411    ...     0.016056   \n5999   0.052842    0.124107  0.047074   0.042421    ...     0.014701   \n\n           rat  rhinoceros      seal  siamese+cat  spider+monkey  squirrel  \\\n0     0.044501    0.016129  0.018268     0.088829       0.012666  0.036158   \n1     0.042428    0.021252  0.029809     0.187082       0.008885  0.022016   \n2     0.039437    0.028691  0.021033     0.059971       0.013731  0.035815   \n3     0.069724    0.018947  0.023698     0.065063       0.009740  0.019809   \n4     0.057908    0.048787  0.036285     0.054236       0.027421  0.026789   \n5     0.051031    0.018607  0.021457     0.071432       0.015101  0.037057   \n6     0.054634    0.010266  0.021070     0.124505       0.022863  0.021355   \n7     0.091292    0.019260  0.022695     0.095544       0.017163  0.026351   \n8     0.068504    0.023028  0.032756     0.065190       0.018486  0.020554   \n9     0.027737    0.016106  0.020154     0.069206       0.019421  0.021429   \n10    0.037654    0.013391  0.027030     0.102884       0.029313  0.034518   \n11    0.073978    0.024284  0.027404     0.069413       0.013865  0.019831   \n12    0.032350    0.022426  0.022580     0.072905       0.021495  0.031268   \n13    0.055652    0.020281  0.013519     0.082068       0.019969  0.022117   \n14    0.044683    0.030363  0.018751     0.066902       0.015923  0.021490   \n15    0.103711    0.018109  0.054743     0.058651       0.026317  0.019469   \n16    0.034959    0.013715  0.027539     0.161573       0.012233  0.017298   \n17    0.077641    0.008502  0.027920     0.102444       0.012711  0.023312   \n18    0.037877    0.016330  0.016196     0.077576       0.021541  0.029591   \n19    0.047704    0.021390  0.021914     0.060352       0.025944  0.035782   \n20    0.040776    0.021218  0.016359     0.083771       0.018193  0.029065   \n21    0.074654    0.023195  0.037226     0.093542       0.017404  0.029828   \n22    0.029379    0.033984  0.031827     0.110086       0.023936  0.027766   \n23    0.052150    0.018334  0.022207     0.058216       0.021729  0.044163   \n24    0.064950    0.033202  0.027140     0.082529       0.017571  0.030721   \n25    0.034796    0.033767  0.023549     0.072989       0.019380  0.023692   \n26    0.084970    0.039134  0.021343     0.050711       0.019881  0.025094   \n27    0.055548    0.012774  0.018843     0.067594       0.013741  0.037153   \n28    0.076397    0.019733  0.017485     0.094309       0.017778  0.020570   \n29    0.041933    0.018500  0.021742     0.064444       0.020671  0.025625   \n...        ...         ...       ...          ...            ...       ...   \n5970  0.031975    0.011008  0.030526     0.118569       0.017375  0.025346   \n5971  0.054036    0.029213  0.018485     0.041230       0.035499  0.033855   \n5972  0.044158    0.016684  0.029223     0.086959       0.019333  0.027269   \n5973  0.038342    0.023098  0.028975     0.084107       0.031928  0.012521   \n5974  0.028381    0.012420  0.015101     0.135305       0.014973  0.016277   \n5975  0.090104    0.041852  0.026402     0.076644       0.011643  0.024162   \n5976  0.022671    0.022075  0.021864     0.033500       0.035078  0.040508   \n5977  0.047139    0.018995  0.026885     0.144094       0.018323  0.021946   \n5978  0.048525    0.014989  0.026175     0.062411       0.023798  0.026853   \n5979  0.036639    0.027127  0.019017     0.075747       0.015059  0.029566   \n5980  0.069983    0.010798  0.016433     0.086525       0.012988  0.016077   \n5981  0.060249    0.022511  0.028591     0.061593       0.022986  0.041466   \n5982  0.089078    0.022541  0.025527     0.063537       0.011625  0.022356   \n5983  0.036343    0.018280  0.026205     0.063432       0.023491  0.037286   \n5984  0.056267    0.038695  0.031647     0.087380       0.018722  0.026078   \n5985  0.057487    0.024436  0.014758     0.090366       0.008204  0.016185   \n5986  0.076638    0.020038  0.028040     0.079673       0.024171  0.022196   \n5987  0.058977    0.011839  0.022910     0.175307       0.015459  0.020231   \n5988  0.041259    0.025230  0.024733     0.068617       0.014240  0.019947   \n5989  0.054347    0.035973  0.025657     0.102392       0.010063  0.029901   \n5990  0.042035    0.010202  0.044520     0.119131       0.011583  0.023031   \n5991  0.057178    0.012427  0.024666     0.088494       0.014584  0.022469   \n5992  0.061353    0.012730  0.020653     0.087800       0.019750  0.016875   \n5993  0.032184    0.022180  0.017708     0.067306       0.019358  0.027563   \n5994  0.041941    0.020598  0.025961     0.103483       0.027171  0.025994   \n5995  0.028369    0.014488  0.018774     0.152767       0.008240  0.015024   \n5996  0.047791    0.026228  0.018299     0.080433       0.010469  0.025368   \n5997  0.047315    0.016086  0.035240     0.070083       0.025649  0.032289   \n5998  0.049756    0.020023  0.040081     0.078334       0.017844  0.044370   \n5999  0.069624    0.017299  0.022452     0.060870       0.017228  0.029931   \n\n        walrus    weasel      wolf  \n0     0.008195  0.006212  0.028624  \n1     0.008443  0.007043  0.015639  \n2     0.012119  0.010746  0.015833  \n3     0.016812  0.006660  0.015359  \n4     0.008059  0.007075  0.017188  \n5     0.011028  0.009251  0.015069  \n6     0.009784  0.009488  0.014438  \n7     0.009275  0.007454  0.028759  \n8     0.007521  0.007686  0.017074  \n9     0.011208  0.006138  0.013269  \n10    0.008577  0.014173  0.023172  \n11    0.005770  0.002873  0.014453  \n12    0.008520  0.008723  0.014285  \n13    0.009044  0.016114  0.020393  \n14    0.007343  0.008166  0.024792  \n15    0.006886  0.008851  0.015501  \n16    0.008435  0.005044  0.025399  \n17    0.013932  0.005082  0.013535  \n18    0.009412  0.008983  0.019115  \n19    0.007017  0.008329  0.017447  \n20    0.010947  0.004715  0.014680  \n21    0.010669  0.006701  0.018228  \n22    0.007673  0.010393  0.035088  \n23    0.008740  0.006914  0.017880  \n24    0.007872  0.009404  0.021364  \n25    0.009830  0.013152  0.018420  \n26    0.005361  0.006876  0.031747  \n27    0.007081  0.013089  0.010883  \n28    0.008833  0.009199  0.014607  \n29    0.011490  0.006438  0.028669  \n...        ...       ...       ...  \n5970  0.008718  0.005154  0.030005  \n5971  0.011207  0.007965  0.025539  \n5972  0.007703  0.010775  0.013511  \n5973  0.008968  0.008546  0.026652  \n5974  0.014616  0.009300  0.011663  \n5975  0.004797  0.006790  0.016107  \n5976  0.013853  0.004559  0.029678  \n5977  0.012181  0.007729  0.012982  \n5978  0.009736  0.008543  0.023303  \n5979  0.008931  0.010645  0.015611  \n5980  0.009454  0.016235  0.010970  \n5981  0.008042  0.010111  0.017388  \n5982  0.008731  0.008619  0.025290  \n5983  0.009073  0.010237  0.013027  \n5984  0.008948  0.005721  0.037188  \n5985  0.007512  0.004798  0.014472  \n5986  0.016280  0.014200  0.020068  \n5987  0.005565  0.006308  0.014502  \n5988  0.005914  0.007341  0.016450  \n5989  0.009531  0.003840  0.033871  \n5990  0.010616  0.005057  0.039603  \n5991  0.010888  0.012044  0.011578  \n5992  0.012493  0.009080  0.020402  \n5993  0.010507  0.013406  0.013356  \n5994  0.009347  0.008743  0.027385  \n5995  0.009636  0.005442  0.024350  \n5996  0.010382  0.008491  0.015188  \n5997  0.014753  0.015597  0.016282  \n5998  0.013450  0.008149  0.017187  \n5999  0.007525  0.007250  0.020841  \n\n[6000 rows x 31 columns]\n",
+          "name": "stdout"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python",
+      "version": "3.6.4",
+      "mimetype": "text/x-python",
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "pygments_lexer": "ipython3",
+      "nbconvert_exporter": "python",
+      "file_extension": ".py"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 1
+}
