@@ -1,3 +1,3 @@
 # MLkernels
 
-My implementations on some of the datasets in kaggle etc..
+My implementations on some of the datasets in kaggle,some for practice etc..
